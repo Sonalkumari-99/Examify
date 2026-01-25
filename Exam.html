@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Exam.css">
+    <title>Exam Application Form - Examify</title>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="form-header">
+            <h1>📝 Examify-Next </h1>
+            <p>Fill all details carefully before submission</p>
+        </div>
+        
+        <div class="border">
+        <div class="exam-info">
+            <h3>Exam Information</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Exam Name</span>
+                    <span class="info-value">Examify Next 2026</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Application Fee</span>
+                    <span class="info-value">₹10</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Last Date</span>
+                    <span class="info-value">31 March 2026</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Exam Date</span>
+                    <span class="info-value">15 May 2026</span>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+
+        <div class="form-body">
+            <div class="success-message" id="successMessage">
+                Form submitted successfully! You can download your confirmation slip below.
+            </div>
+            
+            <div class="border">
+            <form id="examForm">
+                <!-- Section 1: Personal Details -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">👤</span>
+                        1. Personal Details
+                    </h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name <span class="required">*</span></label>
+                            <input type="text" name="firstName" required>
+                            <span class="error-message">Please enter first name</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Middle Name</label>
+                            <input type="text" name="middleName">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Last Name <span class="required">*</span></label>
+                            <input type="text" name="lastName" required>
+                            <span class="error-message">Please enter last name</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date of Birth <span class="required">*</span></label>
+                            <input type="date" name="dob" required>
+                            <span class="error-message">Please select date of birth</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Gender <span class="required">*</span></label>
+                            <select name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <span class="error-message">Please select gender</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Category <span class="required">*</span></label>
+                            <select name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="general">General</option>
+                                <option value="obc">OBC</option>
+                                <option value="sc">SC</option>
+                                <option value="st">ST</option>
+                                <option value="ews">EWS</option>
+                            </select>
+                            <span class="error-message">Please select category</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nationality <span class="required">*</span></label>
+                            <input type="text" name="nationality" value="Indian" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Aadhaar Number</label>
+                            <input type="text" name="aadhaar" pattern="[0-9]{12}" placeholder="12 digit Aadhaar">
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="border">
+                <!-- Section 2: Contact Information -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📞</span>
+                        2. Contact Information
+                    </h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mobile Number <span class="required">*</span></label>
+                            <input type="tel" name="mobile" pattern="[0-9]{10}" placeholder="10 digit mobile number" required>
+                            <span class="error-message">Please enter valid mobile number</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Email Address <span class="required">*</span></label>
+                            <input type="email" name="email" required>
+                            <span class="error-message">Please enter valid email</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Alternate Phone Number</label>
+                            <input type="tel" name="alternateMobile" pattern="[0-9]{10}">
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="border">
+                <!-- Section 3: Address Details -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">🏠</span>
+                        3. Address Details
+                    </h2>
+                    
+                    <h4 style="margin-bottom: 1rem; color: #667eea;">Permanent Address</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label>Address Line <span class="required">*</span></label>
+                            <textarea name="permanentAddress" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>City <span class="required">*</span></label>
+                            <input type="text" name="permanentCity" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>State <span class="required">*</span></label>
+                            <input type="text" name="permanentState" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Pincode <span class="required">*</span></label>
+                            <input type="text" name="permanentPincode" pattern="[0-9]{6}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="sameAddress" name="sameAddress">
+                        <label for="sameAddress">Current address same as permanent address</label>
+                    </div>
+                    
+                    <div id="currentAddressSection">
+                        <h4 style="margin: 1.5rem 0 1rem; color: #667eea;">Current Address</h4>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label>Address Line <span class="required">*</span></label>
+                                <textarea name="currentAddress" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>City <span class="required">*</span></label>
+                                <input type="text" name="currentCity" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>State <span class="required">*</span></label>
+                                <input type="text" name="currentState" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Pincode <span class="required">*</span></label>
+                                <input type="text" name="currentPincode" pattern="[0-9]{6}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="border">
+                <!-- Section 4: Educational Qualifications -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">🎓</span>
+                        4. Educational Qualifications
+                    </h2>
+                    
+                    <h4 style="margin-bottom: 1rem; color: #667eea;">10th Standard</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Board <span class="required">*</span></label>
+                            <input type="text" name="tenth_board" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Year of Passing <span class="required">*</span></label>
+                            <input type="number" name="tenth_year" min="1990" max="2026" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Percentage <span class="required">*</span></label>
+                            <input type="number" name="tenth_percentage" min="0" max="100" step="0.01" required>
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin: 1.5rem 0 1rem; color: #667eea;">12th Standard</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Board <span class="required">*</span></label>
+                            <input type="text" name="twelfth_board" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Stream <span class="required">*</span></label>
+                            <select name="twelfth_stream" required>
+                                <option value="">Select Stream</option>
+                                <option value="science">Science</option>
+                                <option value="commerce">Commerce</option>
+                                <option value="arts">Arts</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Year of Passing <span class="required">*</span></label>
+                            <input type="number" name="twelfth_year" min="1990" max="2026" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Percentage <span class="required">*</span></label>
+                            <input type="number" name="twelfth_percentage" min="0" max="100" step="0.01" required>
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin: 1.5rem 0 1rem; color: #667eea;">Graduation</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Degree <span class="required">*</span></label>
+                            <input type="text" name="graduation_degree" placeholder="e.g., B.A., B.Sc., B.Com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>University <span class="required">*</span></label>
+                            <input type="text" name="graduation_university" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Year of Passing <span class="required">*</span></label>
+                            <input type="number" name="graduation_year" min="1990" max="2026" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Percentage / CGPA <span class="required">*</span></label>
+                            <input type="text" name="graduation_percentage" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Current Course / College Name</label>
+                            <input type="text" name="current_course">
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="border">
+                <!-- Section 5: Parent/Guardian Details -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">👨‍👩‍👧</span>
+                        5. Parent / Guardian Details
+                    </h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Father's Name <span class="required">*</span></label>
+                            <input type="text" name="fatherName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Mother's Name <span class="required">*</span></label>
+                            <input type="text" name="motherName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Guardian Contact Number</label>
+                            <input type="tel" name="guardianContact" pattern="[0-9]{10}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Father's Occupation</label>
+                            <input type="text" name="fatherOccupation">
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="border">
+                <!-- Section 6: Document Upload -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📎</span>
+                        6. Document Upload
+                    </h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Passport Size Photo <span class="required">*</span> (Max 200KB, JPG/PNG)</label>
+                            <label class="file-upload-label">
+                                <input type="file" name="photo" accept="image/*" required>
+                                📷 Click to upload photo
+                            </label>
+                            <div class="upload-preview" id="photoPreview"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Signature <span class="required">*</span> (Max 100KB, JPG/PNG)</label>
+                            <label class="file-upload-label">
+                                <input type="file" name="signature" accept="image/*" required>
+                                ✍️ Click to upload signature
+                            </label>
+                            <div class="upload-preview" id="signaturePreview"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>ID Proof (Aadhaar/PAN) (Max 500KB, PDF/JPG)</label>
+                            <label class="file-upload-label">
+                                <input type="file" name="idProof" accept="image/*,.pdf">
+                                🆔 Click to upload ID proof
+                            </label>
+                            <div class="upload-preview" id="idProofPreview"></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="border">
+                <!-- Section 7: Fee Payment -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">💳</span>
+                        7. Fee Payment
+                    </h2>
+                    
+                    <div class="fee-amount">
+                        <h3>Application Fee</h3>
+                        <div class="amount">₹10</div>
+                        <p>Non-refundable registration fee</p>
+                    </div>
+                    
+                    <label>Select Payment Method <span class="required">*</span></label>
+                    <div class="payment-methods">
+                        <div class="payment-option" data-method="Payment">
+                            <input type="radio" name="paymentMethod" value="Payment" id="upi" required>
+                            <label for="Payment">💸 Payment</label>
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    </div>
+                </div>
+                </div>
+                <div class="border">
+                <!-- Section 8: Declaration -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📋</span>
+                        8. Declaration & Submission
+                    </h2>
+                    
+                    <div class="declaration-box">
+                        <p><strong>I hereby declare that:</strong></p>
+                        <p>1. All the information provided by me in this application form is true, complete, and correct to the best of my knowledge and belief.</p>
+                        <p>2. I understand that any false information or misrepresentation may lead to cancellation of my application and debarment from future exams.</p>
+                        <p>3. I am aware of the examination rules and regulations and agree to abide by them.</p>
+                        <p>4. I have read and understood the privacy policy and terms and conditions.</p>
+                        
+                        <div class="checkbox-group" style="margin-top: 1.5rem;">
+                            <input type="checkbox" id="declaration" name="declaration" required>
+                            <label for="declaration">
+                                I hereby certify that the information provided is correct and I accept all the terms and conditions.
+                                <span class="required">*</span>
+                            </label>
+                            <span class="error-message">You must accept the declaration</span>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="reset" class="btn btn-reset">
+                        <span>🔄 Reset</span>
+                    </button>
+                    <button type="submit" class="btn btn-submit">
+                        <span>✓ Submit Application</span>
+                    </button>
+                </div>
+            </form>
+            
+            <div class="confirmation-slip" id="confirmationSlip" style="display: none;">
+                <div class="slip-header">
+                    <h2>Examination Confirmation Slip</h2>
+                    <p>Ref ID: <span id="refId"></span></p>
+                </div>
+                
+                <div class="slip-content">
+                    <div class="slip-row">
+                        <span class="slip-label">Candidate Name:</span>
+                        <span class="slip-value" id="slipName"></span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="slip-label">Email:</span>
+                        <span class="slip-value" id="slipEmail"></span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="slip-label">Mobile:</span>
+                        <span class="slip-value" id="slipMobile"></span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="slip-label">Exam Date:</span>
+                        <span class="slip-value">15 May 2026</span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="slip-label">Application Fee:</span>
+                        <span class="slip-value">₹10</span>
+                    </div>
+                </div>
+                
+                <div class="slip-footer">
+                    <p>Please keep this confirmation slip for future reference.</p>
+                    <button type="button" class="btn btn-submit" onclick="window.print()">
+                        🖨️ Print / Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        // Form submission handling
+        const form = document.getElementById('examForm');
+        const successMessage = document.getElementById('successMessage');
+        const confirmationSlip = document.getElementById('confirmationSlip');
+        const currentAddressSection = document.getElementById('currentAddressSection');
+        const sameAddressCheckbox = document.querySelector('input[name="sameAddress"]');
+        
+        // Show/hide current address based on checkbox
+        sameAddressCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                currentAddressSection.style.display = 'none';
+                // Make current address fields not required
+                document.querySelectorAll('#currentAddressSection input, #currentAddressSection textarea').forEach(field => {
+                    field.removeAttribute('required');
+                });
+            } else {
+                currentAddressSection.style.display = 'block';
+                // Make current address fields required
+                document.querySelectorAll('#currentAddressSection input, #currentAddressSection textarea').forEach(field => {
+                    field.setAttribute('required', '');
+                });
+            }
+        });
+        
+        // File upload preview
+        function setupFilePreview(inputSelector, previewSelector) {
+            const fileInput = document.querySelector(inputSelector);
+            const preview = document.querySelector(previewSelector);
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            preview.innerHTML = `<img src="${event.target.result}" alt="preview">`;
+                        };
+                        reader.readAsDataURL(e.target.files[0]);
+                    }
+                });
+            }
+        }
+        
+        setupFilePreview('input[name="photo"]', '#photoPreview');
+        setupFilePreview('input[name="signature"]', '#signaturePreview');
+        setupFilePreview('input[name="idProof"]', '#idProofPreview');
+        
+        // Form validation and submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate form
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Get form data
+            const formData = new FormData(form);
+            const firstName = formData.get('firstName');
+            const lastName = formData.get('lastName');
+            const email = formData.get('email');
+            const mobile = formData.get('mobile');
+            
+            // Generate reference ID
+            const refId = 'EXAM' + Date.now();
+            
+            // Hide form and show confirmation
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+            confirmationSlip.style.display = 'block';
+            
+            // Populate confirmation slip
+            document.getElementById('refId').textContent = refId;
+            document.getElementById('slipName').textContent = firstName + ' ' + lastName;
+            document.getElementById('slipEmail').textContent = email;
+            document.getElementById('slipMobile').textContent = mobile;
+            
+            // Scroll to confirmation
+            confirmationSlip.scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Initialize current address section
+        if (!sameAddressCheckbox.checked) {
+            currentAddressSection.style.display = 'block';
+        } else {
+            currentAddressSection.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

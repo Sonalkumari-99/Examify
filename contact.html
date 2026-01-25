@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Contact Us - Examify</title>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">📚 Examify</div>
+        <div class="nav">
+            <a href="home.html"> Home</a>
+            <a href="apply.html">Apply</a>
+            <a href="contact.html"> Contact Us</a>
+            <a href="aboutus.html">About Us</a>
+        </div>
+
+    </div>
+
+    <section class="hero">
+        <h1>Contact Us</h1>
+        <p>Leave a message - We love to hear from you!</p>
+    </section>
+
+    <div class="container">
+        <div class="contact-info">
+            <div>
+                <h2>Get in touch</h2>
+                <p>Visit one of our Agencies location or contact us today</p>
+
+                <div class="info-section">
+                    <h3>Head Office</h3>
+                    <p>JDS House, Electronics Complex, Gurukul, Y-12, EP Block, Sector V, Bidhannagar, Kolkata, West
+                        Bengal 700091</p>
+                    <p><strong>Email:</strong> Examify_Exam@gmail.com</p>
+                    <p><strong>Phone:</strong> +91 9338126723</p>
+                    <p><strong>Hours:</strong> Monday to Friday, 9:00pm to 5:00pm</p>
+                </div>
+
+
+            </div>
+
+            <div class="map-placeholder">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3684.1712521739914!2d88.43479857428711!3d22.572697432968585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a027514cd20d659%3A0x4b66eefc1cb3ed78!2sIEM%20Kolkata!5e0!3m2!1sen!2sin!4v1769237095548!5m2!1sen!2sin"
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-form">
+        <div>
+            <h2>Leave a message</h2>
+            <p style="margin-bottom: 1.5rem; color: #666;">We love to hear from you</p>
+
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+
+        <div>
+            <img src="photo/photo1.jpg" alt="">
+        </div>
+    </div>
+
+    <div class="newsletter">
+        <h2>Sign Up for Exams</h2>
+        <p>Get Email updates about dates, notification</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Your E-mail" required>
+            <button type="submit">Sign up</button>
+        </form>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="col">
+                <div class="logo">📚 Examify</div>
+                <h4>Contact</h4>
+                <p><strong>Address:</strong> Rabindra pally, Kestopur, Kolkata, West Bengal</p>
+                <p><strong>Hours:</strong> 10:00 - 18:00, Mon - Sat</p>
+
+                <div class="follow">
+                    <h4>Follow Us</h4>
+                    <div class="icon">
+                        <i class="fab fa-facebook-f"></i>
+                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-pinterest-p"></i>
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <h4>About</h4>
+                <a href="#">About us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Contact Us</a>
+            </div>
+
+            <div class="col">
+                <h4>My Account</h4>
+                <a href="#">Sign In</a>
+                <a href="#">Result</a>
+                <a href="#">Raise Issue</a>
+                <a href="#">Track Application status</a>
+                <a href="#">Help</a>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>© 2026, Examify</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
+        });
+    </script>
+
+
+</body>
+
+</html>
