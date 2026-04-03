@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Application Confirmed - Examify</title>
+    <style>
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+        }
+
+        .page-wrapper {
+            max-width: 720px;
+            margin: 2.5rem auto;
+            padding: 0 1rem 3rem;
+        }
+
+        /* ── Success Banner ── */
+        .success-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px 16px 0 0;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .tick-circle {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            font-size: 2.2rem;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        .success-banner h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .success-banner p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* ── Registration Number Box ── */
+        .reg-box {
+            background: white;
+            padding: 1.8rem;
+            text-align: center;
+            border-bottom: 2px dashed #e9ecef;
+        }
+
+        .reg-label {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .reg-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #667eea;
+            letter-spacing: 3px;
+            font-family: monospace;
+        }
+
+        .reg-note {
+            font-size: 0.8rem;
+            color: #e74c3c;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* ── Details Card ── */
+        .details-card {
+            background: white;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .details-section {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        .details-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-heading {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem 2rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* ── Status badge ── */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #d4edda;
+            color: #155724;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        /* ── Action buttons ── */
+        .action-bar {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            background: #f8f9fa;
+            border-top: 2px solid #f0f2f5;
+            flex-wrap: wrap;
+        }
+
+        .btn-print {
+            flex: 1;
+            padding: 0.85rem;
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-print:hover {
+            background: #f0f2ff;
+        }
+
+        .btn-home {
+            flex: 1;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+        }
+
+        /* ── Important notes ── */
+        .notes-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 8px 8px 0;
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 2rem;
+        }
+
+        .notes-box h4 {
+            color: #78350f;
+            margin-bottom: 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        .notes-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .notes-box ul li {
+            color: #78350f;
+            font-size: 0.85rem;
+            padding: 0.2rem 0;
+        }
+
+        .notes-box ul li::before {
+            content: '• ';
+            font-weight: bold;
+        }
+
+        /* ── Print styles ── */
+        @media print {
+            .header, .back-to-top, .toast, .action-bar, .notes-box {
+                display: none !important;
+            }
+            body { background: white; }
+            .page-wrapper { margin: 0; max-width: 100%; }
+            .details-card { box-shadow: none; }
+        }
+
+        @media (max-width: 600px) {
+            .detail-grid { grid-template-columns: 1fr; }
+            .action-bar  { flex-direction: column; }
+            .reg-number  { font-size: 1.6rem; letter-spacing: 2px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">📚 Examify</div>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="apply.html">Apply</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="aboutus.html">About Us</a>
+            <a href="login.html">Login</a>
+        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="apply.html">Apply</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="aboutus.html">About Us</a>
+        <a href="login.html">Login</a>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="details-card">
+
+            <!-- Success Banner -->
+            <div class="success-banner">
+                <div class="tick-circle">✅</div>
+                <h1>Application Submitted!</h1>
+                <p>Your application has been successfully submitted. Save your registration number.</p>
+            </div>
+
+            <!-- Registration Number -->
+            <div class="reg-box">
+                <div class="reg-label">Your Registration Number</div>
+                <div class="reg-number" id="regNumber">Loading...</div>
+                <div class="reg-note">⚠️ Please save this number. You will need it for admit card & result.</div>
+            </div>
+
+            <!-- Personal Details Section -->
+            <div class="details-section">
+                <div class="section-heading">
+                    <i class="fa-solid fa-user"></i> Personal Details
+                </div>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Full Name</div>
+                        <div class="detail-value" id="d-name">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Date of Birth</div>
+                        <div class="detail-value" id="d-dob">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Gender</div>
+                        <div class="detail-value" id="d-gender">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Category</div>
+                        <div class="detail-value" id="d-category">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Father's Name</div>
+                        <div class="detail-value" id="d-father">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Mother's Name</div>
+                        <div class="detail-value" id="d-mother">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Mobile</div>
+                        <div class="detail-value" id="d-phone">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Email</div>
+                        <div class="detail-value" id="d-email">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education Section -->
+            <div class="details-section">
+                <div class="section-heading">
+                    <i class="fa-solid fa-graduation-cap"></i> Education Details
+                </div>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">10th Board</div>
+                        <div class="detail-value" id="d-board10">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">10th Year</div>
+                        <div class="detail-value" id="d-year10">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">10th Percentage</div>
+                        <div class="detail-value" id="d-percent10">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">12th Board</div>
+                        <div class="detail-value" id="d-board12">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Highest Qualification</div>
+                        <div class="detail-value" id="d-qualification">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam & Payment Section -->
+            <div class="details-section">
+                <div class="section-heading">
+                    <i class="fa-solid fa-file-invoice"></i> Exam & Payment
+                </div>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Exam Applied</div>
+                        <div class="detail-value" id="d-exam">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Fee Paid</div>
+                        <div class="detail-value" id="d-fee">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Payment Method</div>
+                        <div class="detail-value" id="d-payment">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Submitted At</div>
+                        <div class="detail-value" id="d-date">—</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value">
+                            <span class="status-badge">✓ Submitted</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Notes -->
+            <div class="notes-box">
+                <h4>⚠️ Important Notes</h4>
+                <ul>
+                    <li>Save your registration number — you will need it for all future references.</li>
+                    <li>Admit card will be available 2 weeks before the exam date.</li>
+                    <li>Do not share your registration details with anyone.</li>
+                    <li>Carry a printout of this page to the exam centre.</li>
+                    <li>Any correction requests must be made within 7 days of submission.</li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-bar">
+                <button class="btn-print" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i> Print / Save as PDF
+                </button>
+                <a href="index.html" class="btn-home">
+                    <i class="fa-solid fa-house"></i> Back to Home
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ── Shared behaviours ──
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('open');
+            document.getElementById('mobileNav').classList.toggle('open');
+        }
+        document.querySelectorAll('.nav a, .mobile-nav a').forEach(link => {
+            if (link.href === window.location.href) link.classList.add('active');
+        });
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) btn.classList.add('visible');
+            else btn.classList.remove('visible');
+        });
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show ' + type;
+            setTimeout(() => { toast.className = 'toast'; }, 3000);
+        }
+
+        // ── Load application data from localStorage ──
+        const data = JSON.parse(localStorage.getItem('examifyApplication') || '{}');
+
+        if (!data.regNo) {
+            // if someone lands here without submitting, redirect
+            window.location.href = 'apply.html';
+        } else {
+            document.getElementById('regNumber').textContent    = data.regNo;
+            document.getElementById('d-name').textContent       = data.firstName + ' ' + data.lastName;
+            document.getElementById('d-dob').textContent        = data.dob;
+            document.getElementById('d-gender').textContent     = data.gender;
+            document.getElementById('d-category').textContent   = data.category;
+            document.getElementById('d-father').textContent     = data.fatherName;
+            document.getElementById('d-mother').textContent     = data.motherName;
+            document.getElementById('d-phone').textContent      = data.phone;
+            document.getElementById('d-email').textContent      = data.email;
+            document.getElementById('d-board10').textContent    = data.board10;
+            document.getElementById('d-year10').textContent     = data.year10;
+            document.getElementById('d-percent10').textContent  = data.percent10 + '%';
+            document.getElementById('d-board12').textContent    = data.board12;
+            document.getElementById('d-year12').textContent     = data.year12;
+            document.getElementById('d-qualification').textContent = data.qualification;
+            document.getElementById('d-exam').textContent       = data.exam;
+            document.getElementById('d-fee').textContent        = data.fee;
+            document.getElementById('d-payment').textContent    = data.paymentMethod;
+            document.getElementById('d-date').textContent       = data.submittedAt;
+        }
+    </script>
+
+</body>
+</html>

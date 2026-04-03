@@ -4,240 +4,1145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="apply.css">
+    <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Apply - Examify</title>
+    <style>
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+        }
 
-    <title>Apply for Exams - Examify</title>
+        .page-wrapper {
+            max-width: 780px;
+            margin: 2.5rem auto;
+            padding: 0 1rem;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 0.4rem;
+        }
+
+        .page-title p {
+            color: #666;
+        }
+
+        /* ── Wizard Card ── */
+        .wizard-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* ── Progress Bar Header ── */
+        .wizard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+
+        .wizard-header h2 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* step dots + line */
+        .progress-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            flex: 1;
+        }
+
+        /* connecting line between dots */
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 60%;
+            width: 80%;
+            height: 3px;
+            background: rgba(255,255,255,0.3);
+            transition: background 0.4s;
+        }
+
+        .progress-step.done:not(:last-child)::after {
+            background: white;
+        }
+
+        .step-bubble {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.4s;
+            z-index: 1;
+        }
+
+        .progress-step.active .step-bubble {
+            background: white;
+            color: #667eea;
+            border-color: white;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.3);
+        }
+
+        .progress-step.done .step-bubble {
+            background: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .step-name {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .progress-step.active .step-name {
+            color: white;
+            font-weight: 700;
+        }
+
+        .progress-step.done .step-name {
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* ── Wizard Body ── */
+        .wizard-body {
+            padding: 2.5rem;
+        }
+
+        /* panels */
+        .panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .panel-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .panel-subtitle {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        /* form groups */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.3rem;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 0.5rem;
+            font-size: 0.88rem;
+        }
+
+        .form-group label span {
+            color: #e74c3c;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap i {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+
+        .input-wrap input,
+        .input-wrap select,
+        .input-wrap textarea {
+            width: 100%;
+            padding: 0.72rem 0.75rem 0.72rem 2.4rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: #333;
+            background: white;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            outline: none;
+        }
+
+        .input-wrap textarea {
+            resize: vertical;
+            min-height: 80px;
+            padding-top: 0.72rem;
+        }
+
+        .input-wrap input:focus,
+        .input-wrap select:focus,
+        .input-wrap textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.12);
+        }
+
+        .error-msg {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        /* file upload */
+        .file-upload {
+            border: 2px dashed #d0d5dd;
+            border-radius: 8px;
+            padding: 1.2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload i {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .file-upload p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .file-upload .file-name {
+            font-size: 0.82rem;
+            color: #27ae60;
+            margin-top: 0.4rem;
+            font-weight: 600;
+        }
+
+        /* payment options */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-option {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option:hover {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+
+        .payment-option.selected {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+
+        .payment-option i {
+            font-size: 1.6rem;
+            color: #667eea;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .payment-option p {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #444;
+            margin: 0;
+        }
+
+        /* fee box */
+        .fee-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .fee-box h4 {
+            margin: 0 0 0.2rem;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .fee-box .amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .fee-box .exam-name-fee {
+            font-size: 0.82rem;
+            opacity: 0.8;
+        }
+
+        /* declaration box */
+        .declaration {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 8px 8px 0;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.88rem;
+            color: #78350f;
+            line-height: 1.7;
+        }
+
+        .checkbox-wrap {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-wrap input[type="checkbox"] {
+            margin-top: 3px;
+            accent-color: #667eea;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checkbox-wrap label {
+            font-size: 0.88rem;
+            color: #555;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        /* nav buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #f0f2f5;
+        }
+
+        .btn-back {
+            padding: 0.85rem 1.8rem;
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background: #f0f2ff;
+        }
+
+        .btn-next {
+            flex: 1;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* exam selector on top */
+        .exam-selector {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .exam-selector label {
+            font-weight: 700;
+            color: #2c3e50;
+            white-space: nowrap;
+        }
+
+        .exam-selector select {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            background: white;
+            transition: border-color 0.3s;
+            min-width: 200px;
+        }
+
+        .exam-selector select:focus {
+            border-color: #667eea;
+        }
+
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .wizard-body { padding: 1.5rem; }
+            .wizard-header { padding: 1.5rem 1rem; }
+            .btn-group { flex-direction: column; }
+            .btn-back { order: 2; }
+        }
+    </style>
 </head>
 
 <body>
+
     <!-- Header -->
     <div class="header">
         <div class="logo">📚 Examify</div>
         <div class="nav">
-            <a href="index.html"> Home</a>
-            <a href="apply.html">Apply</a>
-            <a href="contact.html"> Contact Us</a>
+            <a href="index.html">Home</a>
+            <div class="nav-dropdown">
+    <a href="#">Apply <span class="drop-arrow">▼</span></a>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="apply.html">
+            <div class="drop-icon purple">📋</div>
+            <div class="drop-text">
+                <span class="drop-title">Apply for Examify</span>
+                <span class="drop-sub">Fill our online application form</span>
+            </div>
+        </a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="govexams.html">
+            <div class="drop-icon green">🏛️</div>
+            <div class="drop-text">
+                <span class="drop-title">Government Exam Links</span>
+                <span class="drop-sub">Go to official exam websites</span>
+            </div>
+        </a>
+    </div>
+</div>
+            <a href="contact.html">Contact Us</a>
             <a href="aboutus.html">About Us</a>
+            <a href="login.html">Login</a>
         </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
     </div>
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <span class="mobile-apply-label">── Apply ──</span>
+<a href="apply.html" class="mobile-apply-sub">📋 Apply for Examify</a>
+<a href="govexams.html" class="mobile-apply-sub">🏛️ Government Exam Links</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="aboutus.html">About Us</a>
+        <a href="login.html">Login</a>
+    </nav>
 
-    <!-- Main Container -->
-    <div class="container">
+    <div class="page-wrapper">
+
         <div class="page-title">
-            <h1>Apply for Competitive Exams</h1>
-            <p>Choose your exam and start your application process</p>
+            <h1>📋 Online Application Form</h1>
+            <p>Fill all steps carefully. All fields marked <span style="color:#e74c3c">*</span> are required.</p>
         </div>
-        <!-- examify exam -->
-        <div class="exam-banner">
-            <div class="exam-content">
-                <div class="exam-info">
-                    <h2 class="exam-name">Examify Next</h2>
-                    <div class="exam-details">
-                        <span class="detail-badge">📅 Monthly Exam</span>
-                        <span class="detail-badge">🎓 Graduate Level</span>
-                        <span class="detail-badge">🎓 Mock Test</span>
-                        <span class="detail-badge">💼 Government Exam Preparation</span>
+
+        <div class="wizard-card">
+
+            <!-- Progress Header -->
+            <div class="wizard-header">
+                <h2 id="wizardTitle">Step 1 of 4 — Personal Details</h2>
+                <div class="progress-steps">
+                    <div class="progress-step active" id="dot1">
+                        <div class="step-bubble">1</div>
+                        <div class="step-name">Personal</div>
+                    </div>
+                    <div class="progress-step" id="dot2">
+                        <div class="step-bubble">2</div>
+                        <div class="step-name">Education</div>
+                    </div>
+                    <div class="progress-step" id="dot3">
+                        <div class="step-bubble">3</div>
+                        <div class="step-name">Documents</div>
+                    </div>
+                    <div class="progress-step" id="dot4">
+                        <div class="step-bubble">4</div>
+                        <div class="step-name">Payment</div>
                     </div>
                 </div>
-                <div class="apply-section">
-                    <a class="apply-btn" href="Exam.html"
-                        target="_blank">Apply</a>
+            </div>
+
+            <div class="wizard-body">
+
+                <!-- Exam Selector (shown on all steps) -->
+                <div class="exam-selector">
+                    <label>🎯 Applying for:</label>
+                    <select id="examSelect">
+                        <option value="">-- Select Exam --</option>
+                        <option value="SSC CGL|100">SSC CGL — ₹100</option>
+                        <option value="SSC CHSL|100">SSC CHSL — ₹100</option>
+                        <option value="UPSC CSE|200">UPSC CSE — ₹200</option>
+                        <option value="RRB NTPC|250">RRB NTPC — ₹250</option>
+                        <option value="SBI Clerk|750">SBI Clerk — ₹750</option>
+                        <option value="JEE Main|650">JEE Main — ₹650</option>
+                        <option value="ISRO|0">ISRO — Free</option>
+                    </select>
+                </div>
+
+                <!-- ── PANEL 1: Personal Details ── -->
+                <div class="panel active" id="panel1">
+                    <div class="panel-title">👤 Personal Details</div>
+                    <div class="panel-subtitle">Enter your personal information exactly as per your certificates.</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="firstName" placeholder="First name">
+                            </div>
+                            <div class="error-msg" id="err-firstName">Please enter your first name.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="lastName" placeholder="Last name">
+                            </div>
+                            <div class="error-msg" id="err-lastName">Please enter your last name.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date of Birth <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-calendar"></i>
+                                <input type="date" id="dob">
+                            </div>
+                            <div class="error-msg" id="err-dob">Please enter your date of birth.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Gender <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-venus-mars"></i>
+                                <select id="gender">
+                                    <option value="">Select gender</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="error-msg" id="err-gender">Please select your gender.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Father's Name <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-person"></i>
+                                <input type="text" id="fatherName" placeholder="Father's full name">
+                            </div>
+                            <div class="error-msg" id="err-fatherName">Please enter father's name.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mother's Name <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-person-dress"></i>
+                                <input type="text" id="motherName" placeholder="Mother's full name">
+                            </div>
+                            <div class="error-msg" id="err-motherName">Please enter mother's name.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mobile Number <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-phone"></i>
+                                <input type="tel" id="phone" placeholder="10-digit number" maxlength="10">
+                            </div>
+                            <div class="error-msg" id="err-phone">Enter a valid 10-digit number.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="email" id="email" placeholder="Your email">
+                            </div>
+                            <div class="error-msg" id="err-email">Enter a valid email address.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category <span>*</span></label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <select id="category">
+                                <option value="">Select category</option>
+                                <option>General</option>
+                                <option>OBC</option>
+                                <option>SC</option>
+                                <option>ST</option>
+                                <option>EWS</option>
+                                <option>PwD</option>
+                            </select>
+                        </div>
+                        <div class="error-msg" id="err-category">Please select your category.</div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn-next" onclick="goTo(2)">
+                            Next — Education Details →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ── PANEL 2: Education ── -->
+                <div class="panel" id="panel2">
+                    <div class="panel-title">🎓 Education Details</div>
+                    <div class="panel-subtitle">Enter your educational qualifications as per your mark sheets.</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>10th Board <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-school"></i>
+                                <select id="board10">
+                                    <option value="">Select board</option>
+                                    <option>CBSE</option>
+                                    <option>ICSE</option>
+                                    <option>West Bengal Board</option>
+                                    <option>UP Board</option>
+                                    <option>Bihar Board</option>
+                                    <option>Other State Board</option>
+                                </select>
+                            </div>
+                            <div class="error-msg" id="err-board10">Please select your 10th board.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>10th Passing Year <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-calendar-check"></i>
+                                <input type="number" id="year10" placeholder="e.g. 2020" min="2000" max="2025">
+                            </div>
+                            <div class="error-msg" id="err-year10">Please enter your passing year.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>10th Roll Number <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-hashtag"></i>
+                                <input type="text" id="roll10" placeholder="Board roll number">
+                            </div>
+                            <div class="error-msg" id="err-roll10">Please enter your roll number.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>10th Percentage <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-percent"></i>
+                                <input type="number" id="percent10" placeholder="e.g. 85.5" min="0" max="100" step="0.1">
+                            </div>
+                            <div class="error-msg" id="err-percent10">Please enter your percentage.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>12th Board <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-school-flag"></i>
+                                <select id="board12">
+                                    <option value="">Select board</option>
+                                    <option>CBSE</option>
+                                    <option>ICSE</option>
+                                    <option>West Bengal Board</option>
+                                    <option>UP Board</option>
+                                    <option>Bihar Board</option>
+                                    <option>Other State Board</option>
+                                </select>
+                            </div>
+                            <div class="error-msg" id="err-board12">Please select your 12th board.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>12th Passing Year <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-calendar-check"></i>
+                                <input type="number" id="year12" placeholder="e.g. 2022" min="2000" max="2026">
+                            </div>
+                            <div class="error-msg" id="err-year12">Please enter your passing year.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Highest Qualification <span>*</span></label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                                <select id="qualification">
+                                    <option value="">Select qualification</option>
+                                    <option>10th Pass</option>
+                                    <option>12th Pass</option>
+                                    <option>Diploma</option>
+                                    <option>Graduation</option>
+                                    <option>Post Graduation</option>
+                                </select>
+                            </div>
+                            <div class="error-msg" id="err-qualification">Please select your qualification.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>College / University</label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-building-columns"></i>
+                                <input type="text" id="college" placeholder="College name (optional)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn-back" onclick="goTo(1)">← Back</button>
+                        <button class="btn-next" onclick="goTo(3)">
+                            Next — Upload Documents →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ── PANEL 3: Documents ── -->
+                <div class="panel" id="panel3">
+                    <div class="panel-title">📄 Upload Documents</div>
+                    <div class="panel-subtitle">Upload clear scanned copies. Photo max 50KB, Signature max 20KB (JPG/PNG only).</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Passport Photo <span>*</span></label>
+                            <label class="file-upload" id="photoLabel">
+                                <input type="file" id="photoFile" accept="image/*" onchange="handleFile('photoFile','photoLabel','photoName')">
+                                <i class="fa-solid fa-camera"></i>
+                                <p>Click to upload photo</p>
+                                <p style="font-size:0.75rem;color:#aaa;">JPG/PNG, max 50KB</p>
+                                <div class="file-name" id="photoName"></div>
+                            </label>
+                            <div class="error-msg" id="err-photo">Please upload your passport photo.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Signature <span>*</span></label>
+                            <label class="file-upload" id="signLabel">
+                                <input type="file" id="signFile" accept="image/*" onchange="handleFile('signFile','signLabel','signName')">
+                                <i class="fa-solid fa-signature"></i>
+                                <p>Click to upload signature</p>
+                                <p style="font-size:0.75rem;color:#aaa;">JPG/PNG, max 20KB</p>
+                                <div class="file-name" id="signName"></div>
+                            </label>
+                            <div class="error-msg" id="err-sign">Please upload your signature.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Aadhaar Card <span>*</span></label>
+                            <label class="file-upload" id="aadhaarLabel">
+                                <input type="file" id="aadhaarFile" accept="image/*,.pdf" onchange="handleFile('aadhaarFile','aadhaarLabel','aadhaarName')">
+                                <i class="fa-solid fa-id-card"></i>
+                                <p>Click to upload Aadhaar</p>
+                                <p style="font-size:0.75rem;color:#aaa;">JPG/PNG/PDF</p>
+                                <div class="file-name" id="aadhaarName"></div>
+                            </label>
+                            <div class="error-msg" id="err-aadhaar">Please upload your Aadhaar card.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>10th Certificate <span>*</span></label>
+                            <label class="file-upload" id="cert10Label">
+                                <input type="file" id="cert10File" accept="image/*,.pdf" onchange="handleFile('cert10File','cert10Label','cert10Name')">
+                                <i class="fa-solid fa-file-certificate"></i>
+                                <p>Click to upload certificate</p>
+                                <p style="font-size:0.75rem;color:#aaa;">JPG/PNG/PDF</p>
+                                <div class="file-name" id="cert10Name"></div>
+                            </label>
+                            <div class="error-msg" id="err-cert10">Please upload your 10th certificate.</div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn-back" onclick="goTo(2)">← Back</button>
+                        <button class="btn-next" onclick="goTo(4)">
+                            Next — Payment →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ── PANEL 4: Payment ── -->
+                <div class="panel" id="panel4">
+                    <div class="panel-title">💳 Payment</div>
+                    <div class="panel-subtitle">Review your application fee and select a payment method.</div>
+
+                    <!-- fee display -->
+                    <div class="fee-box">
+                        <div>
+                            <h4>Application Fee</h4>
+                            <div class="exam-name-fee" id="feeExamName">No exam selected</div>
+                        </div>
+                        <div class="amount" id="feeAmount">₹0</div>
+                    </div>
+
+                    <!-- payment method -->
+                    <div class="form-group">
+                        <label>Select Payment Method <span>*</span></label>
+                        <div class="payment-grid">
+                            <div class="payment-option" onclick="selectPayment(this,'UPI')">
+                                <i class="fa-solid fa-mobile-screen"></i>
+                                <p>UPI</p>
+                            </div>
+                            <div class="payment-option" onclick="selectPayment(this,'Net Banking')">
+                                <i class="fa-solid fa-building-columns"></i>
+                                <p>Net Banking</p>
+                            </div>
+                            <div class="payment-option" onclick="selectPayment(this,'Debit Card')">
+                                <i class="fa-solid fa-credit-card"></i>
+                                <p>Debit Card</p>
+                            </div>
+                            <div class="payment-option" onclick="selectPayment(this,'Credit Card')">
+                                <i class="fa-solid fa-credit-card"></i>
+                                <p>Credit Card</p>
+                            </div>
+                        </div>
+                        <div class="error-msg" id="err-payment">Please select a payment method.</div>
+                    </div>
+
+                    <!-- declaration -->
+                    <div class="declaration">
+                        ⚠️ I hereby declare that all the information provided in this application is true and correct
+                        to the best of my knowledge. I understand that any false information may result in
+                        cancellation of my candidature.
+                    </div>
+
+                    <div class="checkbox-wrap">
+                        <input type="checkbox" id="declaration" >
+                        <label for="declaration">
+                            I agree to the declaration above and confirm that all details entered are correct.
+                            I have read the <a href="#" style="color:#667eea">Terms & Conditions</a>.
+                        </label>
+                    </div>
+                    <div class="error-msg" id="err-declaration">You must agree to the declaration.</div>
+
+                    <div class="btn-group">
+                        <button class="btn-back" onclick="goTo(3)">← Back</button>
+                        <button class="btn-next" id="submitBtn" onclick="submitForm()">
+                            Submit & Pay →
+                        </button>
+                    </div>
                 </div>
 
             </div>
-        </div>
-        <!-- SSC CGL -->
-        <div class="exam-banner">
-            <div class="exam-content">
-                <div class="exam-info">
-                    <h2 class="exam-name">SSC CGL</h2>
-                    <p class="exam-full-name">Staff Selection Commission - Combined Graduate Level</p>
-                    <div class="exam-details">
-                        <span class="detail-badge">📅 Yearly Exam</span>
-                        <span class="detail-badge">🎓 Graduate Level</span>
-                        <span class="detail-badge">💼 Govt Jobs</span>
-                    </div>
-                </div>
-                <div class="apply-section">
-                    <a class="apply-btn" href="https://ssc.gov.in/for-candidates/cgl-exam/xsd91hjkshdk92xk"
-                        target="_blank">Apply</a>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- RRB -->
-        <div class="exam-banner">
-            <div class="exam-content">
-                <div class="exam-info">
-                    <h2 class="exam-name">RRB</h2>
-                    <p class="exam-full-name">Railway Recruitment Board</p>
-                    <div class="exam-details">
-                        <span class="detail-badge">🚂 Railway Jobs</span>
-                        <span class="detail-badge">🎓 Multiple Posts</span>
-                        <span class="detail-badge">💰 Good Salary</span>
-                    </div>
-                </div>
-                <div class="apply-section">
-                    <a class="apply-btn"
-                        href="https://indianrailways.gov.in/railwayboard/view_section.jsp?lang=0&id=0,7,1281"
-                        target="_blank">Apply</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- UPSC -->
-        <div class="exam-banner">
-            <div class="exam-content">
-                <div class="exam-info">
-                    <h2 class="exam-name">UPSC</h2>
-                    <p class="exam-full-name">Union Public Service Commission</p>
-                    <div class="exam-details">
-                        <span class="detail-badge">🏛️ Civil Services</span>
-                        <span class="detail-badge">⭐ IAS/IPS/IFS</span>
-                        <span class="detail-badge">🎯 Premium Exam</span>
-                    </div>
-                </div>
-                <div class="apply-section">
-                    <a class="apply-btn" href="https://upsc.gov.in/index.php" target="_blank">Apply</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- JEE -->
-        <div class="exam-banner">
-            <div class="exam-content">
-                <div class="exam-info">
-                    <h2 class="exam-name">JEE</h2>
-                    <p class="exam-full-name">Joint Entrance Examination</p>
-                    <div class="exam-details">
-                        <span class="detail-badge">🔬 Engineering</span>
-                        <span class="detail-badge">🏫 IIT/NIT</span>
-                        <span class="detail-badge">📚 Technical</span>
-                    </div>
-                </div>
-                <div class="apply-section">
-                    <a class="apply-btn" href="https://jeemain.nta.nic.in/" target="_blank">Apply</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- SBI Clerk -->
-        <div class="exam-banner">
-            <div class="exam-content">
-                <div class="exam-info">
-                    <h2 class="exam-name">SBI Clerk</h2>
-                    <p class="exam-full-name">State Bank of India - Clerical Cadre</p>
-                    <div class="exam-details">
-                        <span class="detail-badge">🏦 Banking Sector</span>
-                        <span class="detail-badge">💼 Clerical Post</span>
-                        <span class="detail-badge">✅ Job Security</span>
-                    </div>
-                </div>
-                <div class="apply-section">
-                    <a class="apply-btn" href="https://sbi.bank.in/web/careers" target="_blank">Apply</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ISRO Exams -->
-        <div class="exam-banner">
-            <div class="exam-content">
-                <div class="exam-info">
-                    <h2 class="exam-name">ISRO Exams</h2>
-                    <p class="exam-full-name">Indian Space Research Organisation</p>
-                    <div class="exam-details">
-                        <span class="detail-badge">🚀 Space Research</span>
-                        <span class="detail-badge">🔬 Scientific Posts</span>
-                        <span class="detail-badge">⭐ Prestigious</span>
-                    </div>
-                </div>
-                <div class="apply-section">
-                    <a class="apply-btn" href="https://www.isro.gov.in/ICRB_Recruitment9.html" target="_blank">Apply</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- SSC CHSL -->
-        <div class="exam-banner">
-            <div class="exam-content">
-                <div class="exam-info">
-                    <h2 class="exam-name">SSC CHSL</h2>
-                    <p class="exam-full-name">Staff Selection Commission - Combined Higher Secondary Level</p>
-                    <div class="exam-details">
-                        <span class="detail-badge">📝 12th Pass</span>
-                        <span class="detail-badge">💼 Clerk Posts</span>
-                        <span class="detail-badge">🏢 Central Govt</span>
-                    </div>
-                </div>
-                <div class="apply-section">
-                    <a class="apply-btn" href="https://ssc.gov.in/for-candidates/cgl-exam/s40d16nackd16h0"
-                        target="_blank">Apply</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- More Button -->
-        <div class="more-section">
-            <button class="more-btn" onclick="showMore()">View More Exams</button>
         </div>
     </div>
 
-    <footer>
-        <div class="footer-container">
-            <div class="col">
-                <div class="logo">📚 Examify</div>
-                <h4>Contact</h4>
-                <p><strong>Address:</strong> Rabindra pally, Kestopur, Kolkata, West Bengal</p>
-                <p><strong>Hours:</strong> 10:00 - 18:00, Mon - Sat</p>
-
-                <div class="follow">
-                    <h4>Follow Us</h4>
-                    <div class="icon">
-                        <i class="fab fa-facebook-f"></i>
-                        <i class="fab fa-twitter"></i>
-                        <i class="fab fa-instagram"></i>
-                        <i class="fab fa-pinterest-p"></i>
-                        <i class="fab fa-youtube"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <h4>About</h4>
-                <a href="#">About us</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms & Conditions</a>
-                <a href="#">Contact Us</a>
-            </div>
-
-            <div class="col">
-                <h4>My Account</h4>
-                <a href="#">Sign In</a>
-                <a href="#">Result</a>
-                <a href="#">Raise Issue</a>
-                <a href="#">Track Application status</a>
-                <a href="#">Help</a>
-            </div>
-        </div>
-
-        <div class="copyright">
-            <p>© 2026, Examify</p>
-        </div>
-    </footer>
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+    <div class="toast" id="toast"></div>
 
     <script>
-        function applyExam(examName) {
-            alert(`You are applying for: ${examName}\n\nYou will be redirected to the application form.\n\nPlease keep ready:\n• Valid ID proof\n• Educational certificates\n• Photo & Signature\n• Contact details`);
-            // In actual implementation, redirect to application form
-            // window.location.href = `/apply/${examName.toLowerCase().replace(/\s/g, '-')}`;
+        // ── Shared behaviours ──
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('open');
+            document.getElementById('mobileNav').classList.toggle('open');
+        }
+        document.querySelectorAll('.nav a, .mobile-nav a').forEach(link => {
+            if (link.href === window.location.href) link.classList.add('active');
+        });
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) btn.classList.add('visible');
+            else btn.classList.remove('visible');
+        });
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show ' + type;
+            setTimeout(() => { toast.className = 'toast'; }, 3500);
         }
 
-        function showMore() {
-            alert('More exams will be loaded...\n\nComing soon:\n• NEET\n• CAT\n• GATE\n• NDA\n• CDS\nAnd many more!');
+        // ── Step titles ──
+        const titles = [
+            '', // index 0 unused
+            'Step 1 of 4 — Personal Details',
+            'Step 2 of 4 — Education Details',
+            'Step 3 of 4 — Upload Documents',
+            'Step 4 of 4 — Payment',
+        ];
+
+        let currentStep = 1;
+        let selectedPayment = '';
+
+        // ── Navigate to a step ──
+        function goTo(step) {
+            if (step > currentStep && !validateStep(currentStep)) return;
+
+            // update panels
+            document.querySelectorAll('.panel').forEach((p, i) => {
+                p.classList.toggle('active', i + 1 === step);
+            });
+
+            // update dots
+            for (let i = 1; i <= 4; i++) {
+                const dot = document.getElementById('dot' + i);
+                dot.classList.remove('active', 'done');
+                if (i === step) dot.classList.add('active');
+                if (i < step)  dot.classList.add('done');
+            }
+
+            // update title
+            document.getElementById('wizardTitle').textContent = titles[step];
+
+            // update fee box on step 4
+            if (step === 4) updateFeeBox();
+
+            currentStep = step;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── Validation per step ──
+        function validateStep(step) {
+            let valid = true;
+
+            function check(id, errorId, condition) {
+                const show = !condition;
+                document.getElementById(errorId).classList.toggle('show', show);
+                if (show) valid = false;
+            }
+
+            if (step === 1) {
+                check('firstName',  'err-firstName',  document.getElementById('firstName').value.trim());
+                check('lastName',   'err-lastName',   document.getElementById('lastName').value.trim());
+                check('dob',        'err-dob',        document.getElementById('dob').value);
+                check('gender',     'err-gender',     document.getElementById('gender').value);
+                check('fatherName', 'err-fatherName', document.getElementById('fatherName').value.trim());
+                check('motherName', 'err-motherName', document.getElementById('motherName').value.trim());
+                check('phone',      'err-phone',      /^\d{10}$/.test(document.getElementById('phone').value.trim()));
+                check('email',      'err-email',      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim()));
+                check('category',   'err-category',   document.getElementById('category').value);
+            }
+
+            if (step === 2) {
+                check('board10',       'err-board10',       document.getElementById('board10').value);
+                check('year10',        'err-year10',        document.getElementById('year10').value);
+                check('roll10',        'err-roll10',        document.getElementById('roll10').value.trim());
+                check('percent10',     'err-percent10',     document.getElementById('percent10').value);
+                check('board12',       'err-board12',       document.getElementById('board12').value);
+                check('year12',        'err-year12',        document.getElementById('year12').value);
+                check('qualification', 'err-qualification', document.getElementById('qualification').value);
+            }
+
+            if (step === 3) {
+                check('photoFile',   'err-photo',   document.getElementById('photoFile').files.length > 0);
+                check('signFile',    'err-sign',    document.getElementById('signFile').files.length > 0);
+                check('aadhaarFile', 'err-aadhaar', document.getElementById('aadhaarFile').files.length > 0);
+                check('cert10File',  'err-cert10',  document.getElementById('cert10File').files.length > 0);
+            }
+
+            if (!valid) showToast('Please fill all required fields.', 'error');
+            return valid;
+        }
+
+        // ── File upload handler ──
+        function handleFile(inputId, labelId, nameId) {
+            const file = document.getElementById(inputId).files[0];
+            if (file) {
+                document.getElementById(nameId).textContent = '✓ ' + file.name;
+                document.getElementById(labelId).style.borderColor = '#27ae60';
+            }
+        }
+
+        // ── Payment method selector ──
+        function selectPayment(el, method) {
+            document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedPayment = method;
+            document.getElementById('err-payment').classList.remove('show');
+        }
+
+        // ── Update fee box ──
+        function updateFeeBox() {
+            const val = document.getElementById('examSelect').value;
+            if (val) {
+                const [name, fee] = val.split('|');
+                document.getElementById('feeExamName').textContent = name;
+                document.getElementById('feeAmount').textContent = fee === '0' ? 'Free' : '₹' + fee;
+            } else {
+                document.getElementById('feeExamName').textContent = 'No exam selected';
+                document.getElementById('feeAmount').textContent = '₹0';
+            }
+        }
+
+        // ── Submit ──
+        function submitForm() {
+            // validate step 4
+            let valid = true;
+            if (!selectedPayment) {
+                document.getElementById('err-payment').classList.add('show');
+                valid = false;
+            }
+            if (!document.getElementById('declaration').checked) {
+                document.getElementById('err-declaration').classList.add('show');
+                valid = false;
+            }
+            if (!document.getElementById('examSelect').value) {
+                showToast('Please select an exam first.', 'error');
+                valid = false;
+            }
+            if (!valid) { showToast('Please complete all required fields.', 'error'); return; }
+
+            // show spinner
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = '<span class="spinner"></span> Processing...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // generate registration number
+                const regNo = 'EXM' + Date.now().toString().slice(-8);
+
+                // collect all data
+                const examVal  = document.getElementById('examSelect').value;
+                const [examName, examFee] = examVal.split('|');
+
+                const applicationData = {
+                    regNo:         regNo,
+                    exam:          examName,
+                    fee:           examFee === '0' ? 'Free' : '₹' + examFee,
+                    paymentMethod: selectedPayment,
+                    firstName:     document.getElementById('firstName').value.trim(),
+                    lastName:      document.getElementById('lastName').value.trim(),
+                    dob:           document.getElementById('dob').value,
+                    gender:        document.getElementById('gender').value,
+                    fatherName:    document.getElementById('fatherName').value.trim(),
+                    motherName:    document.getElementById('motherName').value.trim(),
+                    phone:         document.getElementById('phone').value.trim(),
+                    email:         document.getElementById('email').value.trim(),
+                    category:      document.getElementById('category').value,
+                    board10:       document.getElementById('board10').value,
+                    year10:        document.getElementById('year10').value,
+                    roll10:        document.getElementById('roll10').value.trim(),
+                    percent10:     document.getElementById('percent10').value,
+                    board12:       document.getElementById('board12').value,
+                    year12:        document.getElementById('year12').value,
+                    qualification: document.getElementById('qualification').value,
+                    submittedAt:   new Date().toLocaleString(),
+                };
+
+                // save to localStorage
+                localStorage.setItem('examifyApplication', JSON.stringify(applicationData));
+
+                // go to confirmation page
+                window.location.href = 'confirmation.html';
+            }, 2000);
         }
     </script>
-</body>
 
+</body>
 </html>

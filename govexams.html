@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Government Exam Links - Examify</title>
+    <style>
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .hero p  { font-size: 1.05rem; opacity: 0.9; }
+
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem 3rem;
+        }
+
+        /* ── Search bar ── */
+        .search-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-bar i {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            font-family: inherit;
+            color: #333;
+        }
+
+        /* ── Filter tabs ── */
+        .filter-tabs {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            border: 2px solid #e9ecef;
+            background: white;
+            color: #555;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
+        /* ── Category heading ── */
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 2rem 0 1rem;
+            padding-left: 0.8rem;
+            border-left: 4px solid #667eea;
+        }
+
+        /* ── Exam cards grid ── */
+        .exam-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .exam-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.3rem 1.5rem;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .exam-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.2);
+            border-color: #667eea;
+        }
+
+        /* icon circle */
+        .exam-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .exam-info { flex: 1; }
+
+        .exam-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .exam-full {
+            font-size: 0.8rem;
+            color: #888;
+            line-height: 1.4;
+        }
+
+        .exam-tag {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .tag-central  { background: #eeedfe; color: #534ab7; }
+        .tag-railway  { background: #e1f5ee; color: #0f6e56; }
+        .tag-banking  { background: #faeeda; color: #854f0b; }
+        .tag-defence  { background: #faece7; color: #993c1d; }
+        .tag-state    { background: #fbeaf0; color: #993556; }
+        .tag-entrance { background: #e6f1fb; color: #185fa5; }
+
+        .external-icon {
+            color: #ccc;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+
+        .exam-card:hover .external-icon {
+            color: #667eea;
+        }
+
+        /* ── Note box ── */
+        .note {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 8px 8px 0;
+            padding: 1rem 1.2rem;
+            margin-top: 2.5rem;
+            font-size: 0.88rem;
+            color: #78350f;
+        }
+
+        .note strong { display: block; margin-bottom: 0.3rem; font-size: 0.9rem; }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #667eea;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            pointer-events: none;
+            min-width: 250px;
+            text-align: center;
+        }
+        .toast.show    { opacity: 1; transform: translateY(0); }
+        .toast.success { background: #27ae60; }
+        .toast.error   { background: #e74c3c; }
+
+        @media (max-width: 600px) {
+            .exam-grid { grid-template-columns: 1fr; }
+            .hero h1   { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">📚 Examify</div>
+        <div class="nav">
+            <a href="index.html">Home</a>
+
+            <!-- Apply dropdown -->
+            <div class="nav-dropdown">
+                <a href="#">Apply <span class="drop-arrow">▼</span></a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="apply.html">
+                        <div class="drop-icon purple">📋</div>
+                        <div class="drop-text">
+                            <span class="drop-title">Apply for Examify</span>
+                            <span class="drop-sub">Fill our online application form</span>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="govexams.html">
+                        <div class="drop-icon green">🏛️</div>
+                        <div class="drop-text">
+                            <span class="drop-title">Government Exam Links</span>
+                            <span class="drop-sub">Go to official exam websites</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <a href="contact.html">Contact Us</a>
+            <a href="aboutus.html">About Us</a>
+            <a href="login.html">Login</a>
+        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <span class="mobile-apply-label">── Apply ──</span>
+        <a href="apply.html" class="mobile-apply-sub">📋 Apply for Examify</a>
+        <a href="govexams.html" class="mobile-apply-sub">🏛️ Government Exam Links</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="aboutus.html">About Us</a>
+        <a href="login.html">Login</a>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>🏛️ Government Exam Official Links</h1>
+        <p>Click any exam below to go directly to its official website</p>
+    </div>
+
+    <div class="page-wrapper">
+
+        <!-- Search -->
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Search exams e.g. SSC, UPSC, RRB..." oninput="filterExams()">
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterByTag('all', this)">All Exams</button>
+            <button class="filter-tab" onclick="filterByTag('central', this)">Central Govt</button>
+            <button class="filter-tab" onclick="filterByTag('railway', this)">Railway</button>
+            <button class="filter-tab" onclick="filterByTag('banking', this)">Banking</button>
+            <button class="filter-tab" onclick="filterByTag('defence', this)">Defence</button>
+            <button class="filter-tab" onclick="filterByTag('entrance', this)">Entrance</button>
+            <button class="filter-tab" onclick="filterByTag('state', this)">State Govt</button>
+        </div>
+
+        <!-- Exam cards — all in one grid, filtered by JS -->
+        <div class="exam-grid" id="examGrid">
+
+            <!-- Central Govt -->
+            <a class="exam-card" href="https://ssc.gov.in" target="_blank" data-tag="central" data-name="SSC CGL Staff Selection Commission Combined Graduate Level">
+                <div class="exam-icon" style="background:#eeedfe">🏢</div>
+                <div class="exam-info">
+                    <div class="exam-name">SSC CGL</div>
+                    <div class="exam-full">Staff Selection Commission — Combined Graduate Level</div>
+                    <span class="exam-tag tag-central">Central Govt</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://ssc.gov.in" target="_blank" data-tag="central" data-name="SSC CHSL Staff Selection Commission Combined Higher Secondary Level">
+                <div class="exam-icon" style="background:#eeedfe">🏢</div>
+                <div class="exam-info">
+                    <div class="exam-name">SSC CHSL</div>
+                    <div class="exam-full">Staff Selection Commission — Combined Higher Secondary Level</div>
+                    <span class="exam-tag tag-central">Central Govt</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://upsc.gov.in" target="_blank" data-tag="central" data-name="UPSC CSE Union Public Service Commission Civil Services Examination">
+                <div class="exam-icon" style="background:#eeedfe">⚖️</div>
+                <div class="exam-info">
+                    <div class="exam-name">UPSC CSE</div>
+                    <div class="exam-full">Union Public Service Commission — Civil Services Exam</div>
+                    <span class="exam-tag tag-central">Central Govt</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://upsc.gov.in" target="_blank" data-tag="central" data-name="UPSC CDS Combined Defence Services Examination">
+                <div class="exam-icon" style="background:#eeedfe">⚖️</div>
+                <div class="exam-info">
+                    <div class="exam-name">UPSC CDS</div>
+                    <div class="exam-full">Union Public Service Commission — Combined Defence Services</div>
+                    <span class="exam-tag tag-central">Central Govt</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <!-- Railway -->
+            <a class="exam-card" href="https://indianrailways.gov.in" target="_blank" data-tag="railway" data-name="RRB NTPC Railway Recruitment Board Non Technical Popular Categories">
+                <div class="exam-icon" style="background:#e1f5ee">🚂</div>
+                <div class="exam-info">
+                    <div class="exam-name">RRB NTPC</div>
+                    <div class="exam-full">Railway Recruitment Board — Non Technical Popular Categories</div>
+                    <span class="exam-tag tag-railway">Railway</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://indianrailways.gov.in" target="_blank" data-tag="railway" data-name="RRB Group D Railway Recruitment Board Group D Level 1">
+                <div class="exam-icon" style="background:#e1f5ee">🚂</div>
+                <div class="exam-info">
+                    <div class="exam-name">RRB Group D</div>
+                    <div class="exam-full">Railway Recruitment Board — Level 1 Posts</div>
+                    <span class="exam-tag tag-railway">Railway</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://indianrailways.gov.in" target="_blank" data-tag="railway" data-name="RRB JE Railway Recruitment Board Junior Engineer">
+                <div class="exam-icon" style="background:#e1f5ee">🚂</div>
+                <div class="exam-info">
+                    <div class="exam-name">RRB JE</div>
+                    <div class="exam-full">Railway Recruitment Board — Junior Engineer</div>
+                    <span class="exam-tag tag-railway">Railway</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <!-- Banking -->
+            <a class="exam-card" href="https://www.sbi.co.in/careers" target="_blank" data-tag="banking" data-name="SBI Clerk State Bank of India Junior Associates">
+                <div class="exam-icon" style="background:#faeeda">🏦</div>
+                <div class="exam-info">
+                    <div class="exam-name">SBI Clerk</div>
+                    <div class="exam-full">State Bank of India — Junior Associates (Customer Support)</div>
+                    <span class="exam-tag tag-banking">Banking</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://www.sbi.co.in/careers" target="_blank" data-tag="banking" data-name="SBI PO State Bank of India Probationary Officer">
+                <div class="exam-icon" style="background:#faeeda">🏦</div>
+                <div class="exam-info">
+                    <div class="exam-name">SBI PO</div>
+                    <div class="exam-full">State Bank of India — Probationary Officer</div>
+                    <span class="exam-tag tag-banking">Banking</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://www.ibps.in" target="_blank" data-tag="banking" data-name="IBPS PO Institute of Banking Personnel Selection Probationary Officer">
+                <div class="exam-icon" style="background:#faeeda">🏦</div>
+                <div class="exam-info">
+                    <div class="exam-name">IBPS PO</div>
+                    <div class="exam-full">Institute of Banking Personnel Selection — Probationary Officer</div>
+                    <span class="exam-tag tag-banking">Banking</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://www.ibps.in" target="_blank" data-tag="banking" data-name="IBPS Clerk Institute of Banking Personnel Selection Clerk">
+                <div class="exam-icon" style="background:#faeeda">🏦</div>
+                <div class="exam-info">
+                    <div class="exam-name">IBPS Clerk</div>
+                    <div class="exam-full">Institute of Banking Personnel Selection — Clerk</div>
+                    <span class="exam-tag tag-banking">Banking</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <!-- Defence -->
+            <a class="exam-card" href="https://www.joinindianarmy.nic.in" target="_blank" data-tag="defence" data-name="Indian Army Recruitment Join Indian Army">
+                <div class="exam-icon" style="background:#faece7">🪖</div>
+                <div class="exam-info">
+                    <div class="exam-name">Indian Army</div>
+                    <div class="exam-full">Join Indian Army — Various Posts Recruitment</div>
+                    <span class="exam-tag tag-defence">Defence</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://www.nda.nic.in" target="_blank" data-tag="defence" data-name="NDA National Defence Academy Naval Academy Examination">
+                <div class="exam-icon" style="background:#faece7">🪖</div>
+                <div class="exam-info">
+                    <div class="exam-name">NDA</div>
+                    <div class="exam-full">National Defence Academy &amp; Naval Academy Examination</div>
+                    <span class="exam-tag tag-defence">Defence</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://www.afcat.cdac.in" target="_blank" data-tag="defence" data-name="AFCAT Air Force Common Admission Test">
+                <div class="exam-icon" style="background:#faece7">✈️</div>
+                <div class="exam-info">
+                    <div class="exam-name">AFCAT</div>
+                    <div class="exam-full">Air Force Common Admission Test</div>
+                    <span class="exam-tag tag-defence">Defence</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <!-- Entrance -->
+            <a class="exam-card" href="https://jeemain.nta.ac.in" target="_blank" data-tag="entrance" data-name="JEE Main Joint Entrance Examination Engineering">
+                <div class="exam-icon" style="background:#e6f1fb">🔬</div>
+                <div class="exam-info">
+                    <div class="exam-name">JEE Main</div>
+                    <div class="exam-full">Joint Entrance Examination — Engineering Admissions</div>
+                    <span class="exam-tag tag-entrance">Entrance</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://neet.nta.nic.in" target="_blank" data-tag="entrance" data-name="NEET National Eligibility cum Entrance Test Medical">
+                <div class="exam-icon" style="background:#e6f1fb">🩺</div>
+                <div class="exam-info">
+                    <div class="exam-name">NEET UG</div>
+                    <div class="exam-full">National Eligibility cum Entrance Test — Medical Admissions</div>
+                    <span class="exam-tag tag-entrance">Entrance</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://www.isro.gov.in/Careers.html" target="_blank" data-tag="central" data-name="ISRO Indian Space Research Organisation Recruitment">
+                <div class="exam-icon" style="background:#eeedfe">🚀</div>
+                <div class="exam-info">
+                    <div class="exam-name">ISRO</div>
+                    <div class="exam-full">Indian Space Research Organisation — Technical Posts</div>
+                    <span class="exam-tag tag-central">Central Govt</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <!-- State -->
+            <a class="exam-card" href="https://wbpsc.gov.in" target="_blank" data-tag="state" data-name="WBPSC West Bengal Public Service Commission">
+                <div class="exam-icon" style="background:#fbeaf0">🏛️</div>
+                <div class="exam-info">
+                    <div class="exam-name">WBPSC</div>
+                    <div class="exam-full">West Bengal Public Service Commission</div>
+                    <span class="exam-tag tag-state">State Govt</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://wbpolice.gov.in" target="_blank" data-tag="state" data-name="WB Police West Bengal Police Recruitment">
+                <div class="exam-icon" style="background:#fbeaf0">👮</div>
+                <div class="exam-info">
+                    <div class="exam-name">WB Police</div>
+                    <div class="exam-full">West Bengal Police — Constable &amp; SI Recruitment</div>
+                    <span class="exam-tag tag-state">State Govt</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+            <a class="exam-card" href="https://mpsc.gov.in" target="_blank" data-tag="state" data-name="MPSC Maharashtra Public Service Commission">
+                <div class="exam-icon" style="background:#fbeaf0">🏛️</div>
+                <div class="exam-info">
+                    <div class="exam-name">MPSC</div>
+                    <div class="exam-full">Maharashtra Public Service Commission</div>
+                    <span class="exam-tag tag-state">State Govt</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </a>
+
+        </div>
+
+        <!-- Note -->
+        <div class="note">
+            <strong>⚠️ Important Note</strong>
+            All links above go directly to official government websites. Examify is not responsible for any changes on those websites. Always verify information on the official site before applying.
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="col">
+                <div class="logo">📚 Examify</div>
+                <h4>Contact</h4>
+                <p><strong>Address:</strong> Rabindra Pally, Kestopur, Kolkata, West Bengal</p>
+                <p><strong>Hours:</strong> 10:00 - 18:00, Mon - Sat</p>
+                <div class="follow">
+                    <h4>Follow Us</h4>
+                    <div class="icon">
+                        <i class="fab fa-facebook-f"></i>
+                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-pinterest-p"></i>
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <h4>About</h4>
+                <a href="aboutus.html">About Us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms &amp; Conditions</a>
+                <a href="contact.html">Contact Us</a>
+            </div>
+            <div class="col">
+                <h4>My Account</h4>
+                <a href="login.html">Sign In</a>
+                <a href="#">Result</a>
+                <a href="contact.html">Raise Issue</a>
+                <a href="#">Track Application Status</a>
+                <a href="contact.html">Help</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2026, Examify. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('open');
+            document.getElementById('mobileNav').classList.toggle('open');
+        }
+
+        document.querySelectorAll('.nav a, .mobile-nav a').forEach(function(link) {
+            if (link.href === window.location.href) link.classList.add('active');
+        });
+
+        window.addEventListener('scroll', function() {
+            var btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) btn.classList.add('visible');
+            else btn.classList.remove('visible');
+        });
+
+        function showToast(message, type) {
+            var toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show ' + (type || '');
+            setTimeout(function() { toast.className = 'toast'; }, 3000);
+        }
+
+        // ── Search ──
+        function filterExams() {
+            var query = document.getElementById('searchInput').value.toLowerCase();
+            var cards = document.querySelectorAll('.exam-card');
+            cards.forEach(function(card) {
+                var name = card.getAttribute('data-name').toLowerCase();
+                card.style.display = name.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        // ── Tag filter ──
+        var currentTag = 'all';
+        function filterByTag(tag, btn) {
+            currentTag = tag;
+            // update active tab
+            document.querySelectorAll('.filter-tab').forEach(function(t) {
+                t.classList.remove('active');
+            });
+            btn.classList.add('active');
+
+            var cards = document.querySelectorAll('.exam-card');
+            cards.forEach(function(card) {
+                if (tag === 'all' || card.getAttribute('data-tag') === tag) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

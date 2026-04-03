@@ -4,53 +4,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <title>Examify</title>
+    <style>
+        /* Toast — defined here so it works even if shared.css has issues */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #667eea;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            pointer-events: none;
+            min-width: 250px;
+            text-align: center;
+        }
+        .toast.show    { opacity: 1; transform: translateY(0); }
+        .toast.success { background: #27ae60; }
+        .toast.error   { background: #e74c3c; }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 44px;
+            height: 44px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+            transition: all 0.3s;
+            z-index: 999;
+        }
+        .back-to-top:hover   { background: #764ba2; transform: translateY(-3px); }
+        .back-to-top.visible { display: flex; }
+
+        /* Welcome bar when logged in */
+        .welcome-bar {
+            background: #27ae60;
+            color: white;
+            text-align: center;
+            padding: 0.6rem 1rem;
+            font-size: 0.92rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        .welcome-bar.show {
+            display: block;
+        }
+
+        .welcome-bar a {
+            color: white;
+            font-weight: 700;
+            text-decoration: underline;
+            margin-left: 1rem;
+            cursor: pointer;
+        }
+
+        /* Marquee */
+        .marquee-wrapper {
+            overflow: hidden;
+            background: #667eea;
+            color: white;
+            padding: 0.6rem 0;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .marquee-track {
+            display: flex;
+            white-space: nowrap;
+            animation: marquee-scroll 30s linear infinite;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marquee-scroll {
+            from { transform: translateX(100vw); }
+            to   { transform: translateX(-100%); }
+        }
+    </style>
 </head>
 
 <body>
 
+    <!-- Welcome bar (shown when logged in) -->
+    <div class="welcome-bar" id="welcomeBar">
+        👋 Welcome back, <span id="welcomeName"></span>!
+        <a onclick="logout()">Logout</a>
+    </div>
+
     <!-- Header -->
     <div class="header">
-        <div class="logo">
-            📚 Examify
-        </div>
+        <div class="logo">📚 Examify</div>
         <div class="nav">
-            <a href="index.html"> Home</a>
-            <a href="apply.html">Apply</a>
-            <a href="contact.html"> Contact Us</a>
-            <a href="aboutus.html">About Us</a>
-        </div>
+            <a href="index.html">Home</a>
+            <div class="nav-dropdown">
+    <a href="#">Apply <span class="drop-arrow">▼</span></a>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="apply.html">
+            <div class="drop-icon purple">📋</div>
+            <div class="drop-text">
+                <span class="drop-title">Apply for Examify</span>
+                <span class="drop-sub">Fill our online application form</span>
+            </div>
+        </a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="govexams.html">
+            <div class="drop-icon green">🏛️</div>
+            <div class="drop-text">
+                <span class="drop-title">Government Exam Links</span>
+                <span class="drop-sub">Go to official exam websites</span>
+            </div>
+        </a>
     </div>
+</div>
+            <a href="contact.html">Contact Us</a>
+            <a href="aboutus.html">About Us</a>
+            <a href="login.html" id="navLoginLink">Login</a>
+        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <span class="mobile-apply-label">── Apply ──</span>
+<a href="apply.html" class="mobile-apply-sub">📋 Apply for Examify</a>
+<a href="govexams.html" class="mobile-apply-sub">🏛️ Government Exam Links</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="aboutus.html">About Us</a>
+        <a href="login.html" id="mobileLoginLink">Login</a>
+    </nav>
 
+    <!-- Banner -->
     <section class="banner">
-        <img src="photo/banner1.png" alt="">
-        <a href="apply.html"><button class="apply-btn">Apply <i class="fa-solid fa-arrow-right"></i></button></a>
+        <img src="photo/banner1.png" alt="Examify Banner">
+        <a href="apply.html">
+            <button class="apply-btn">Apply <i class="fa-solid fa-arrow-right"></i></button>
+        </a>
     </section>
 
-    <div>
-        <marquee behavior="scroll" direction="LEFT" id="marquee" scrolldelay="50">
-            📢 Welcome to Examify – Your One Stop Destination for All Government Exam Notifications & Forms!
-            📝 SSC | UPSC | RRB | Banking | Defence | State Exams – Apply & Track Easily on Examify!
-        </marquee>
+    <!-- Marquee (CSS based — no deprecated tag) -->
+    <div class="marquee-wrapper">
+        <div class="marquee-track">
+            📢 Welcome to Examify – Your One Stop Destination for All Government Exam Notifications &amp; Forms!
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            📝 SSC | UPSC | RRB | Banking | Defence | State Exams – Apply &amp; Track Easily on Examify!
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
     </div>
 
+    <!-- Registration Steps -->
     <div class="section" id="registration">
         <h2>Steps for Registration</h2>
         <div class="registration-steps">
+
             <div class="step">
                 <h3>📝 Step 1: Registration Details</h3>
                 <p>Applicants can submit the following details:</p>
                 <ul>
-                    <li>Name - First name, Middle name, Last name, Verify name</li>
+                    <li>Name - First name, Middle name, Last name</li>
                     <li>Gender - Male, Female, Other</li>
                     <li>Date of Birth</li>
-                    <li>Father name</li>
-                    <li>Mother name</li>
+                    <li>Father name &amp; Mother name</li>
                     <li>Phone no., Alternate phone no.</li>
                     <li>Valid email id</li>
-                    <li>Board Examination, Roll no, Roll code, College name, etc.</li>
+                    <li>Board Examination, Roll no, Roll code, College name</li>
                     <li>Security Question</li>
                 </ul>
             </div>
@@ -58,71 +197,73 @@
             <div class="step">
                 <h3>💻 Step 2: How to Apply Online</h3>
                 <ul>
-                    <li>Candidate can be registered himself/herself</li>
-                    <li>DTR (One Time Registration) posted by clicking the new Registration button</li>
-                    <li>After Registration, he/she has to login (by email id/mobile number) to verify the already
-                        registered DTR Application</li>
+                    <li>Candidate can register himself/herself</li>
+                    <li>DTR (One Time Registration) by clicking New Registration</li>
+                    <li>After Registration, login to verify your DTR Application</li>
                     <li>Apply for desirable Examination</li>
                 </ul>
             </div>
 
             <div class="step">
                 <h3>🔐 Step 3: Login to Apply</h3>
-                <p>Use your registered email or mobile number to login and complete your application for your
-                    desired examination.</p>
+                <p>Use your registered email or mobile number to login and complete your application for your desired examination.</p>
             </div>
+
         </div>
 
         <div class="note-box">
             <h3>⚠️ Important Notes</h3>
             <ul>
                 <li>Fill details exactly as per certificates</li>
-                <li>Use valid mobile number & email</li>
+                <li>Use valid mobile number &amp; email</li>
                 <li>Upload clear document (jpg/pdf)</li>
                 <li>Don't refresh during payment</li>
-                <li>Save application number for future</li>
-                <li>Check before submit - all the details</li>
+                <li>Save application number for future reference</li>
+                <li>Check all details before submitting</li>
             </ul>
         </div>
     </div>
 
+    <!-- Available Examinations -->
     <div class="section" id="exams">
         <h2>Available Examinations</h2>
         <div class="exam-grid">
-            <div class="exam-card">
+            <div class="exam-card" onclick="window.location.href='apply.html'">
                 <h3>SSC CGL</h3>
                 <p>Staff Selection Commission Combined Graduate Level</p>
             </div>
-            <div class="exam-card">
+            <div class="exam-card" onclick="window.location.href='apply.html'">
                 <h3>RRB</h3>
                 <p>Railway Recruitment Board</p>
             </div>
-            <div class="exam-card">
+            <div class="exam-card" onclick="window.location.href='apply.html'">
                 <h3>UPSC</h3>
                 <p>Union Public Service Commission</p>
             </div>
-            <div class="exam-card">
+            <div class="exam-card" onclick="window.location.href='apply.html'">
                 <h3>JEE</h3>
                 <p>Joint Entrance Examination</p>
             </div>
-            <div class="exam-card">
+            <div class="exam-card" onclick="window.location.href='apply.html'">
                 <h3>SBI Clerk</h3>
                 <p>State Bank of India Clerk</p>
             </div>
-            <div class="exam-card">
+            <div class="exam-card" onclick="window.location.href='apply.html'">
                 <h3>ISRO Exams</h3>
                 <p>Indian Space Research Organisation Exams</p>
             </div>
-            <div class="exam-card">
+            <div class="exam-card" onclick="window.location.href='apply.html'">
                 <h3>SSC CHSL</h3>
                 <p>Staff Selection Commission Combined Higher Secondary Level</p>
             </div>
-            <div class="exam-card">
-                <h3>More <i class="fa-solid fa-arrow-down"></i></h3>
+            <div class="exam-card" onclick="window.location.href='apply.html'">
+                <h3>More <i class="fa-solid fa-arrow-right"></i></h3>
+                <p>View all available examinations</p>
             </div>
         </div>
     </div>
 
+    <!-- FAQs -->
     <div class="section" id="faq">
         <h2>❓ FAQs</h2>
         <div class="faq">
@@ -148,16 +289,15 @@
             </div>
         </div>
     </div>
-    </div>
 
+    <!-- Footer -->
     <footer>
         <div class="footer-container">
             <div class="col">
                 <div class="logo">📚 Examify</div>
                 <h4>Contact</h4>
-                <p><strong>Address:</strong> Rabindra pally, Kestopur, Kolkata, West Bengal</p>
+                <p><strong>Address:</strong> Rabindra Pally, Kestopur, Kolkata, West Bengal</p>
                 <p><strong>Hours:</strong> 10:00 - 18:00, Mon - Sat</p>
-
                 <div class="follow">
                     <h4>Follow Us</h4>
                     <div class="icon">
@@ -172,28 +312,89 @@
 
             <div class="col">
                 <h4>About</h4>
-                <a href="#">About us</a>
+                <a href="aboutus.html">About Us</a>
                 <a href="#">Privacy Policy</a>
-                <a href="#">Terms & Conditions</a>
-                <a href="#">Contact Us</a>
+                <a href="#">Terms &amp; Conditions</a>
+                <a href="contact.html">Contact Us</a>
             </div>
 
             <div class="col">
                 <h4>My Account</h4>
-                <a href="#">Sign In</a>
+                <a href="login.html">Sign In</a>
                 <a href="#">Result</a>
-                <a href="#">Raise Issue</a>
-                <a href="#">Track Application status</a>
-                <a href="#">Help</a>
+                <a href="contact.html">Raise Issue</a>
+                <a href="#">Track Application Status</a>
+                <a href="contact.html">Help</a>
             </div>
         </div>
 
         <div class="copyright">
-            <p>© 2026, Examify</p>
+            <p>© 2026, Examify. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- Back to top & Toast -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+    <div class="toast" id="toast"></div>
+
+    <script>
+
+        // ── Hamburger ──
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('open');
+            document.getElementById('mobileNav').classList.toggle('open');
+        }
+
+        // ── Active nav link ──
+        document.querySelectorAll('.nav a, .mobile-nav a').forEach(function(link) {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+
+        // ── Back to top ──
+        window.addEventListener('scroll', function() {
+            var btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) btn.classList.add('visible');
+            else btn.classList.remove('visible');
+        });
+
+        // ── Toast ──
+        function showToast(message, type) {
+            var toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show ' + (type || '');
+            setTimeout(function() {
+                toast.className = 'toast';
+            }, 3000);
+        }
+
+        // ── Show welcome bar if logged in ──
+        var userStr = localStorage.getItem('examifyUser');
+        if (userStr) {
+            var user = JSON.parse(userStr);
+            // show welcome bar
+            document.getElementById('welcomeBar').classList.add('show');
+            document.getElementById('welcomeName').textContent = user.name;
+            // change Login link to Logout in nav
+            document.getElementById('navLoginLink').textContent = 'Logout';
+            document.getElementById('navLoginLink').href = '#';
+            document.getElementById('navLoginLink').onclick = logout;
+            document.getElementById('mobileLoginLink').textContent = 'Logout';
+            document.getElementById('mobileLoginLink').href = '#';
+            document.getElementById('mobileLoginLink').onclick = logout;
+        }
+
+        // ── Logout ──
+        function logout() {
+            localStorage.removeItem('examifyUser');
+            showToast('Logged out successfully!', 'success');
+            setTimeout(function() {
+                window.location.reload();
+            }, 1500);
+        }
+
+    </script>
 
 </body>
-
 </html>

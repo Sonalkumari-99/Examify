@@ -1,0 +1,498 @@
+/* ============================================================
+   shared.css — Examify
+   Link this file in EVERY HTML page.
+   ============================================================ */
+
+
+/* ── 1. RESET ─────────────────────────────────────────────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+
+/* ── 2. HEADER ────────────────────────────────────────────── */
+.header {
+    background: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+
+/* ── 3. LOGO ──────────────────────────────────────────────── */
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #667eea;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* ── 4. NAV ───────────────────────────────────────────────── */
+.nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #667eea;
+    transition: width 0.3s ease;
+}
+
+.nav a:hover::after,
+.nav a.active::after {
+    width: 100%;
+}
+
+.nav a:hover {
+    color: #667eea;
+}
+
+.nav a.active {
+    color: #667eea;
+    font-weight: 700;
+}
+
+
+/* ── 5. APPLY DROPDOWN ────────────────────────────────────── */
+
+/* wrapper — this is the parent that holds the link + dropdown */
+.nav-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* the Apply link inside the dropdown wrapper */
+.nav-dropdown > a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    position: relative;
+    padding-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.nav-dropdown > a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #667eea;
+    transition: width 0.3s ease;
+}
+
+.nav-dropdown:hover > a {
+    color: #667eea;
+}
+
+.nav-dropdown:hover > a::after {
+    width: 100%;
+}
+
+/* small arrow icon next to Apply */
+.nav-dropdown > a .drop-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.3s;
+    margin-left: 2px;
+}
+
+.nav-dropdown:hover > a .drop-arrow {
+    transform: rotate(180deg);
+}
+
+/* the dropdown menu box */
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    min-width: 240px;
+    padding: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+    z-index: 2000;
+    pointer-events: none;
+}
+
+/* small triangle pointer above the box */
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+}
+
+/* show on hover */
+.nav-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    top: calc(100% + 8px);
+}
+
+/* each item inside the dropdown */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: #f0f2ff;
+}
+
+/* icon circle */
+.dropdown-item .drop-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.drop-icon.purple {
+    background: #eeedfe;
+    color: #667eea;
+}
+
+.drop-icon.green {
+    background: #e1f5ee;
+    color: #1d9e75;
+}
+
+/* text inside each dropdown item */
+.dropdown-item .drop-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-item .drop-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #2c3e50;
+    line-height: 1.3;
+}
+
+.dropdown-item .drop-sub {
+    font-size: 0.78rem;
+    color: #888;
+    margin-top: 1px;
+}
+
+/* divider line between the two items */
+.dropdown-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 0.3rem 0.5rem;
+}
+
+
+/* ── 6. HAMBURGER (mobile) ────────────────────────────────── */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: #333;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+
+/* ── 7. MOBILE NAV ────────────────────────────────────────── */
+.mobile-nav {
+    display: none;
+    flex-direction: column;
+    background: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-top: 1px solid #eee;
+}
+
+.mobile-nav a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: color 0.3s;
+}
+
+.mobile-nav a:last-child { border-bottom: none; }
+
+.mobile-nav a:hover,
+.mobile-nav a.active { color: #667eea; }
+
+.mobile-nav.open { display: flex; }
+
+/* mobile apply sub-links */
+.mobile-nav .mobile-apply-sub {
+    padding-left: 1.2rem;
+    border-bottom: none;
+}
+
+.mobile-nav .mobile-apply-label {
+    color: #667eea;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.5rem 0 0.2rem;
+    border-bottom: none;
+    display: block;
+    pointer-events: none;
+}
+
+
+/* ── 8. FOOTER ────────────────────────────────────────────── */
+footer {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #ecf0f1;
+    width: 100%;
+    padding: 10px;
+    margin-top: 3rem;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+}
+
+.col { padding: 1.5rem; }
+
+.col h4 {
+    color: #667eea;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.col p {
+    color: #bdc3c7;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.col strong { color: #ecf0f1; }
+
+.col a {
+    display: block;
+    color: #bdc3c7;
+    text-decoration: none;
+    margin: 0.5rem 0;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+}
+
+.col a:hover {
+    color: #667eea;
+    padding-left: 0.5rem;
+}
+
+
+/* ── 9. SOCIAL ICONS ──────────────────────────────────────── */
+.follow { margin-top: 1.5rem; }
+.follow h4 { margin-top: 0; margin-bottom: 1rem; }
+
+.icon {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.icon i {
+    width: 40px;
+    height: 40px;
+    background: #667eea;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.icon i:hover {
+    background: #764ba2;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+
+/* ── 10. COPYRIGHT ────────────────────────────────────────── */
+.copyright {
+    border-top: 1px solid rgba(236, 240, 241, 0.2);
+    padding: 10px;
+    color: #95a5a6;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.copyright p { margin: 0; }
+
+
+/* ── 11. TOAST ────────────────────────────────────────────── */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #667eea;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+    pointer-events: none;
+    min-width: 250px;
+    text-align: center;
+}
+
+.toast.show    { opacity: 1; transform: translateY(0); }
+.toast.success { background: #27ae60; }
+.toast.error   { background: #e74c3c; }
+
+
+/* ── 12. UTILITY BUTTONS ──────────────────────────────────── */
+.btn {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-outline {
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+/* ── 13. BACK TO TOP ──────────────────────────────────────── */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 44px;
+    height: 44px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s;
+    z-index: 999;
+}
+
+.back-to-top:hover   { background: #764ba2; transform: translateY(-3px); }
+.back-to-top.visible { display: flex; }
+
+
+/* ── 14. RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 768px) {
+    .nav        { display: none; }
+    .hamburger  { display: flex; }
+    .header     { padding: 1rem; }
+
+    .footer-container { grid-template-columns: 1fr; }
+    .col              { padding: 1rem; }
+
+    .back-to-top { bottom: 1rem; left: 1rem; }
+    .toast       { bottom: 1rem; right: 1rem; left: 1rem; text-align: center; }
+}
